@@ -46,15 +46,7 @@ Note:
             120:'f9', 121:'f10', 122:'f11', 123:'f12' 
         },
         
-        // In FF: Numbers on the Num Pad represents by the same the same decimal values of  
-        // the `abcdefghi ascii characters  (96, 97, ...  105).
-        // as a result, when clicking on '0' key in the num pad yields keyCode=97
-        // as a result, String.fromCharCode(65) -> 'a'
-        // therefore, I added this mapping for the 10 problematic cases.
-        firefoxNumPad: { 96: '0', 97:'1', 98: '2', 99: '3', 100: '4', 
-            101: '5', 102: '6', 103: '7', 104: '8', 105: '9' },
-        
-            shiftNums: {
+        shiftNums: {
                 "`":"~", "1":"!", "2":"@", "3":"#", "4":"$", "5":"%", "6":"^", "7":"&", 
                 "8":"*", "9":"(", "0":")", "-":"_", "=":"+", ";":":", "'":"\"", ",":"<", 
                 ".":">",  "/":"?",  "\\":"|" },
@@ -67,6 +59,11 @@ Note:
             return result;
         }
     };
+    // add firefox num pad char codes
+    if (jQuery.browser.mozilla){
+        hotkeys.specialKeys = $.extend(hotkeys.specialKeys, { 96: '0', 97:'1', 98: '2', 99: '3', 100: '4', 
+            101: '5', 102: '6', 103: '7', 104: '8', 105: '9' });
+    }    
     // a wrapper around of $.fn.find 
     // wanted to add .query property which represents the selector
     // see more at: http://groups.google.com/group/jquery-en/browse_thread/thread/18f9825e8d22f18d
@@ -126,7 +123,6 @@ Note:
                     else if (!hotkeys.triggersMap[selectorId][eventType]) {
                         hotkeys.triggersMap[selectorId][eventType] = trigger[eventType];
                     }
-                    
                     // make trigger point as array so more than one handler can be bound
                     var mapPoint = hotkeys.triggersMap[selectorId][eventType][combi];
                     if (!mapPoint){
@@ -194,13 +190,6 @@ Note:
                 alt = event.altKey || event.originalEvent.altKey,
                 mapPoint = null;
                 
-            // check for the NumPad overlapping issue in FireFox
-            if (jQuery.browser.mozilla){
-                if (code >= 96 && code <= 105){
-                    character = hotkeys.firefoxNumPad[code];
-                }
-            }
-            
             for (var x=0; x < ids.length; x++){
                 if (hotkeys.triggersMap[ids[x]][type]){
                     mapPoint = hotkeys.triggersMap[ids[x]][type];
