@@ -61,9 +61,9 @@ Note:
     };
     // add firefox num pad char codes
     if (jQuery.browser.mozilla){
-        hotkeys.specialKeys = $.extend(hotkeys.specialKeys, { 96: '0', 97:'1', 98: '2', 99: '3', 100: '4', 
-            101: '5', 102: '6', 103: '7', 104: '8', 105: '9' });
-    }    
+        hotkeys.specialKeys = $.extend(hotkeys.specialKeys, 
+            { 96: '0', 97:'1', 98: '2', 99: '3', 100: '4', 101: '5', 102: '6', 103: '7', 104: '8', 105: '9' });
+    }
     // a wrapper around of $.fn.find 
     // wanted to add .query property which represents the selector
     // see more at: http://groups.google.com/group/jquery-en/browse_thread/thread/18f9825e8d22f18d
@@ -136,7 +136,7 @@ Note:
                     }
                     
                     // add attribute and call $.event.add per matched element
-                    result = this.each(function(){
+                    this.each(function(){
                         // jQuery wrapper for the current element
                         var jqElem = jQuery(this);
                         
@@ -146,8 +146,9 @@ Note:
                         }
                         
                         jqElem.attr('hkId', selectorId);
-                        jQuery.event.add(this, eventType, hotkeys.handler);
+                        //jQuery.event.add(this, eventType, hotkeys.handler);
                     });
+                    result = this.__bind__(handle.join(' '), data, hotkeys.handler)
                 }
             }
             // see if there are other types, pass them to the original $.fn.bind
