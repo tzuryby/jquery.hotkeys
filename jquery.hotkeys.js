@@ -33,8 +33,12 @@ Note:
     jQuery.fn.__unbind__ = jQuery.fn.unbind;
     jQuery.fn.__find__ = jQuery.fn.find;
     
+    // add this mac os x indicator to be used later at event.metaKey
+    // which should be supported only on mac
+    jQuery.os.mac = /mac os/i.test(navigator.userAgent);
+    
     var hotkeys = {
-        version: '0.7.7',
+        version: '0.7.8',
         override: /keydown|keypress|keyup/g,        
         triggersMap: {},
         
@@ -185,12 +189,12 @@ Note:
                 // prevent f5 overlapping with 't' (or f4 with 's', etc.)
                 character = !special && String.fromCharCode(code).toLowerCase(),
                 shift = event.shiftKey,
-                ctrl = event.ctrlKey,            
+                ctrl = event.ctrlKey,
                 // patch for jquery 1.2.5 && 1.2.6 see more at:  
                 // http://groups.google.com/group/jquery-en/browse_thread/thread/83e10b3bb1f1c32b
                 alt = event.altKey || event.originalEvent.altKey,
                 mapPoint = null;
-                
+            
             for (var x=0; x < ids.length; x++){
                 if (hotkeys.triggersMap[ids[x]][type]){
                     mapPoint = hotkeys.triggersMap[ids[x]][type];
