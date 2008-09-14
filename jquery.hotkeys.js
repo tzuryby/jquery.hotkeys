@@ -1,19 +1,16 @@
 /*
-
-jQuery Hotkeys Plugin by Tzury Bar Yochay 
-
-    tzury.by@gmail.com
-    http://evalinux.wordpress.com
-    http://facebook.com/profile.php?id=513676303
-
 (c) Copyrights 2007 - 2008
 
-Original version was based on the idea by by Binny V A
-    @ http://www.openjs.com/scripts/events/keyboard_shortcuts/
+Original idea by by Binny V A, http://www.openjs.com/scripts/events/keyboard_shortcuts/
+ 
+jQuery Plugin by Tzury Bar Yochay 
+tzury.by@gmail.com
+http://evalinux.wordpress.com
+http://facebook.com/profile.php?id=513676303
 
 Project's sites: 
 http://code.google.com/p/js-hotkeys/
-http://github.com/tzuryby/jquery.hotkeys/tree/master
+http://github.com/tzuryby/hotkeys/tree/master
 
 License: same as jQuery license. 
 
@@ -25,11 +22,10 @@ USAGE:
     $(document).bind('keydown', {combi:'Ctrl+x', disableInInput: true} , function() {});
     
 Note:
-    This plugin wraps the following jQuery methods
-        * $.fn.find
-        * $.fn.bind
-        * $.fn.unbind
+    This plugin overrides jQuery.fn.find, jQuery.fn.bind and jQuery.fn.unbind
+    
 */
+
 
 (function (jQuery){
     // keep reference to the original $.fn.bind and $.fn.unbind
@@ -38,7 +34,7 @@ Note:
     jQuery.fn.__find__ = jQuery.fn.find;
     
     var hotkeys = {
-        version: '0.7.8',
+        version: '0.7.7',
         override: /keydown|keypress|keyup/g,        
         triggersMap: {},
         
@@ -59,7 +55,7 @@ Note:
             // {'keyup': {'ctrl': {cb:, propagate, disableInInput}}}
             var result = {};
             result[type] = {};
-            result[type][combi] = {cb: callback, disableInInput: false};                
+            result[type][combi] = {cb: callback, propagate: true, disableInInput: false};                
             return result;
         }
     };
@@ -72,7 +68,8 @@ Note:
     // wanted to add .query property which represents the selector
     // see more at: http://groups.google.com/group/jquery-en/browse_thread/thread/18f9825e8d22f18d
     jQuery.fn.find = function( selector ) {
-        this.query = selector;
+        // adding this line so to retrieve this later
+        this.query=selector;
         return jQuery.fn.__find__.apply(this, arguments);
 	};
     
@@ -93,11 +90,18 @@ Note:
     };
     
     jQuery.fn.bind = function(type, data, fn){
-        var result = this.__bind__(type, data, fn), // original $.fn.bind
-            // grab keyup,keydown,keypress
-            handle = type.match(hotkeys.override);
+        // grab keyup,keydown,keypress
+        var handle = type.match(hotkeys.override);
         
-        if (handle && !jQuery.isFunction(data)){
+        if (jQuery.isFunction(data) || !handle){
+            // call jQuery.bind only
+            return this.__bind__(type, data, fn);
+        }
+        else{
+            // split the job
+            var result = null,            
+            // pass the rest to the original $.fn.bind
+            pass2jq = jQuery.trim(type.replace(hotkeys.override, ''));
             if (typeof data === "string"){
                 data = {'combi': data};
             }
@@ -108,6 +112,7 @@ Note:
                         trigger = hotkeys.newTrigger(eventType, combi, fn),
                         selectorId = ((this.prevObject && this.prevObject.query) || (this[0].id && this[0].id) || this[0]).toString();
                         
+                    trigger[eventType][combi].propagate = data.propagate;
                     trigger[eventType][combi].disableInInput = data.disableInInput;
                     
                     // first time selector is bounded
@@ -129,20 +134,30 @@ Note:
                     else {
                         hotkeys.triggersMap[selectorId][eventType][combi][mapPoint.length] = trigger[eventType][combi];
                     }
+                    
                     // add attribute and call $.event.add per matched element
                     this.each(function(){
                         // jQuery wrapper for the current element
                         var jqElem = jQuery(this);
+                        
                         // element already associated with another collection
                         if (jqElem.attr('hkId') && jqElem.attr('hkId') !== selectorId){
                             selectorId = jqElem.attr('hkId') + ";" + selectorId;
                         }
+                        
                         jqElem.attr('hkId', selectorId);
+                        //jQuery.event.add(this, eventType, hotkeys.handler);
                     });
+                    result = this.__bind__(handle.join(' '), data, hotkeys.handler)
                 }
             }
+            // see if there are other types, pass them to the original $.fn.bind
+            if (pass2jq){
+                // call original jQuery.bind()
+                result = this.__bind__(pass2jq, data, fn);
+            }
+            return result;
         }
-        return result;
     };
     // work-around for opera and safari where (sometimes) the target is the element which was last 
     // clicked with the mouse and not the document event it would make sense to get the document
@@ -170,12 +185,12 @@ Note:
                 // prevent f5 overlapping with 't' (or f4 with 's', etc.)
                 character = !special && String.fromCharCode(code).toLowerCase(),
                 shift = event.shiftKey,
-                ctrl = event.ctrlKey,
+                ctrl = event.ctrlKey,            
                 // patch for jquery 1.2.5 && 1.2.6 see more at:  
                 // http://groups.google.com/group/jquery-en/browse_thread/thread/83e10b3bb1f1c32b
                 alt = event.altKey || event.originalEvent.altKey,
                 mapPoint = null;
-            
+                
             for (var x=0; x < ids.length; x++){
                 if (hotkeys.triggersMap[ids[x]][type]){
                     mapPoint = hotkeys.triggersMap[ids[x]][type];
@@ -207,7 +222,7 @@ Note:
                     }
                 }
                 if (trigger){
-                    var result = true;
+                    var propagate = false;
                     for (var x=0; x < trigger.length; x++){
                         if(trigger[x].disableInInput){
                             // double check event.currentTarget and event.target
@@ -218,9 +233,16 @@ Note:
                             }
                         }
                         // call the registered callback function
-                        result = result && trigger[x].cb(event);
+                        trigger[x].cb(event);
+                        if (trigger[x].propagate){
+                            propagate = true;
+                        }
                     }
-                    return result;
+                    if (!propagate){
+                        event.stopPropagation();
+                        event.preventDefault();                    
+                    }
+                    return propagate;
                 }
             }
             // no match, return true
