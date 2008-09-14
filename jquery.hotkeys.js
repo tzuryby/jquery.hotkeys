@@ -22,7 +22,7 @@ USAGE:
     $(document).bind('keydown', {combi:'Ctrl+x', disableInInput: true} , function() {});
     
 Note:
-    This plugin overrides jQuery.fn.find, jQuery.fn.bind and jQuery.fn.unbind
+    This plugin wraps the following jQuery methods: $.fn.find, $.fn.bind and $.fn.unbind
     
 */
 
@@ -64,11 +64,10 @@ Note:
         hotkeys.specialKeys = $.extend(hotkeys.specialKeys, 
             { 96: '0', 97:'1', 98: '2', 99: '3', 100: '4', 101: '5', 102: '6', 103: '7', 104: '8', 105: '9' });
     }
+    
     // a wrapper around of $.fn.find 
-    // wanted to add .query property which represents the selector
     // see more at: http://groups.google.com/group/jquery-en/browse_thread/thread/18f9825e8d22f18d
     jQuery.fn.find = function( selector ) {
-        // adding this line so to retrieve this later
         this.query=selector;
         return jQuery.fn.__find__.apply(this, arguments);
 	};
@@ -80,9 +79,9 @@ Note:
         }
         if (combi && typeof combi === 'string'){
             var selectorId = ((this.prevObject && this.prevObject.query) || (this[0].id && this[0].id) || this[0]).toString();
-            type = type.split(' ');
-            for (var x=0; x<type.length; x++){
-                delete hotkeys.triggersMap[selectorId][type[x]][combi];
+            var hkTypes = type.split(' ');
+            for (var x=0; x<hkTypes.length; x++){
+                delete hotkeys.triggersMap[selectorId][hkTypes[x]][combi];
             }
         }
         // call jQuery original unbind
@@ -102,6 +101,13 @@ Note:
             var result = null,            
             // pass the rest to the original $.fn.bind
             pass2jq = jQuery.trim(type.replace(hotkeys.override, ''));
+            
+            // see if there are other types, pass them to the original $.fn.bind
+            if (pass2jq){
+                // call original jQuery.bind()
+                result = this.__bind__(pass2jq, data, fn);
+            }            
+            
             if (typeof data === "string"){
                 data = {'combi': data};
             }
@@ -144,17 +150,10 @@ Note:
                         if (jqElem.attr('hkId') && jqElem.attr('hkId') !== selectorId){
                             selectorId = jqElem.attr('hkId') + ";" + selectorId;
                         }
-                        
                         jqElem.attr('hkId', selectorId);
-                        //jQuery.event.add(this, eventType, hotkeys.handler);
                     });
                     result = this.__bind__(handle.join(' '), data, hotkeys.handler)
                 }
-            }
-            // see if there are other types, pass them to the original $.fn.bind
-            if (pass2jq){
-                // call original jQuery.bind()
-                result = this.__bind__(pass2jq, data, fn);
             }
             return result;
         }
