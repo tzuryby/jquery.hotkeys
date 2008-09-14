@@ -1,16 +1,19 @@
 /*
+
+jQuery Hotkeys Plugin by Tzury Bar Yochay 
+
+    tzury.by@gmail.com
+    http://evalinux.wordpress.com
+    http://facebook.com/profile.php?id=513676303
+
 (c) Copyrights 2007 - 2008
 
-Original idea by by Binny V A, http://www.openjs.com/scripts/events/keyboard_shortcuts/
- 
-jQuery Plugin by Tzury Bar Yochay 
-tzury.by@gmail.com
-http://evalinux.wordpress.com
-http://facebook.com/profile.php?id=513676303
+Original version was based on the idea by by Binny V A
+    @ http://www.openjs.com/scripts/events/keyboard_shortcuts/
 
 Project's sites: 
 http://code.google.com/p/js-hotkeys/
-http://github.com/tzuryby/hotkeys/tree/master
+http://github.com/tzuryby/jquery.hotkeys/tree/master
 
 License: same as jQuery license. 
 
@@ -21,11 +24,13 @@ USAGE:
     // special options such as disableInIput
     $(document).bind('keydown', {combi:'Ctrl+x', disableInInput: true} , function() {});
     
+    options are:
+        {combi: 'HOT_KEY', propagate: true|false, disableInInput: true|false}
+    
 Note:
     This plugin overrides jQuery.fn.find, jQuery.fn.bind and jQuery.fn.unbind
     
 */
-
 
 (function (jQuery){
     // keep reference to the original $.fn.bind and $.fn.unbind
@@ -72,8 +77,7 @@ Note:
     // wanted to add .query property which represents the selector
     // see more at: http://groups.google.com/group/jquery-en/browse_thread/thread/18f9825e8d22f18d
     jQuery.fn.find = function( selector ) {
-        // adding this line so to retrieve this later
-        this.query=selector;
+        this.query = selector;
         return jQuery.fn.__find__.apply(this, arguments);
 	};
     
@@ -94,18 +98,11 @@ Note:
     };
     
     jQuery.fn.bind = function(type, data, fn){
-        // grab keyup,keydown,keypress
-        var handle = type.match(hotkeys.override);
+        var result = this.__bind__(type, data, fn), // original $.fn.bind
+            // grab keyup,keydown,keypress
+            handle = type.match(hotkeys.override);
         
-        if (jQuery.isFunction(data) || !handle){
-            // call jQuery.bind only
-            return this.__bind__(type, data, fn);
-        }
-        else{
-            // split the job
-            var result = null,            
-            // pass the rest to the original $.fn.bind
-            //pass2jq = jQuery.trim(type.replace(hotkeys.override, ''));
+        if (handle && !jQuery.isFunction(data)){
             if (typeof data === "string"){
                 data = {'combi': data};
             }
@@ -138,30 +135,20 @@ Note:
                     else {
                         hotkeys.triggersMap[selectorId][eventType][combi][mapPoint.length] = trigger[eventType][combi];
                     }
-                    
                     // add attribute and call $.event.add per matched element
                     this.each(function(){
                         // jQuery wrapper for the current element
                         var jqElem = jQuery(this);
-                        
                         // element already associated with another collection
                         if (jqElem.attr('hkId') && jqElem.attr('hkId') !== selectorId){
                             selectorId = jqElem.attr('hkId') + ";" + selectorId;
                         }
-                        
                         jqElem.attr('hkId', selectorId);
-                        //jQuery.event.add(this, eventType, hotkeys.handler);
                     });
-                    //~ result = this.__bind__(handle.join(' '), data, hotkeys.handler)
                 }
             }
-            //~ // see if there are other types, pass them to the original $.fn.bind
-            //~ if (pass2jq){
-                //~ // call original jQuery.bind()
-                //~ result = this.__bind__(pass2jq, data, fn);
-            //~ }
-            return this.__bind__(type, data, fn);;
         }
+        return result;
     };
     // work-around for opera and safari where (sometimes) the target is the element which was last 
     // clicked with the mouse and not the document event it would make sense to get the document
