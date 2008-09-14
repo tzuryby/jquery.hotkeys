@@ -34,7 +34,7 @@ Note:
     jQuery.fn.__find__ = jQuery.fn.find;
     
     var hotkeys = {
-        version: '0.7.7',
+        version: '0.7.8',
         override: /keydown|keypress|keyup/g,        
         triggersMap: {},
         
