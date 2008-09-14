@@ -24,12 +24,11 @@ USAGE:
     // special options such as disableInIput
     $(document).bind('keydown', {combi:'Ctrl+x', disableInInput: true} , function() {});
     
-    options are:
-        {combi: 'HOT_KEY', propagate: true|false, disableInInput: true|false}
-    
 Note:
-    This plugin overrides jQuery.fn.find, jQuery.fn.bind and jQuery.fn.unbind
-    
+    This plugin wraps the following jQuery methods
+        * $.fn.find
+        * $.fn.bind
+        * $.fn.unbind
 */
 
 (function (jQuery){
@@ -37,10 +36,6 @@ Note:
     jQuery.fn.__bind__ = jQuery.fn.bind;
     jQuery.fn.__unbind__ = jQuery.fn.unbind;
     jQuery.fn.__find__ = jQuery.fn.find;
-    
-    // add this mac os x indicator to be used later at event.metaKey
-    // which should be supported only on mac
-    jQuery.os.mac = /mac os/i.test(navigator.userAgent);
     
     var hotkeys = {
         version: '0.7.8',
@@ -64,7 +59,7 @@ Note:
             // {'keyup': {'ctrl': {cb:, propagate, disableInInput}}}
             var result = {};
             result[type] = {};
-            result[type][combi] = {cb: callback, propagate: true, disableInInput: false};                
+            result[type][combi] = {cb: callback, disableInInput: false};                
             return result;
         }
     };
@@ -113,7 +108,6 @@ Note:
                         trigger = hotkeys.newTrigger(eventType, combi, fn),
                         selectorId = ((this.prevObject && this.prevObject.query) || (this[0].id && this[0].id) || this[0]).toString();
                         
-                    trigger[eventType][combi].propagate = data.propagate;
                     trigger[eventType][combi].disableInInput = data.disableInInput;
                     
                     // first time selector is bounded
@@ -213,7 +207,7 @@ Note:
                     }
                 }
                 if (trigger){
-                    var propagate = false;
+                    var result = true;
                     for (var x=0; x < trigger.length; x++){
                         if(trigger[x].disableInInput){
                             // double check event.currentTarget and event.target
@@ -224,16 +218,9 @@ Note:
                             }
                         }
                         // call the registered callback function
-                        trigger[x].cb(event);
-                        if (trigger[x].propagate){
-                            propagate = true;
-                        }
+                        result = result && trigger[x].cb(event);
                     }
-                    if (!propagate){
-                        event.stopPropagation();
-                        event.preventDefault();                    
-                    }
-                    return propagate;
+                    return result;
                 }
             }
             // no match, return true
