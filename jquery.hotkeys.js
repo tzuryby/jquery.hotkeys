@@ -105,7 +105,7 @@ Note:
             // split the job
             var result = null,            
             // pass the rest to the original $.fn.bind
-            pass2jq = jQuery.trim(type.replace(hotkeys.override, ''));
+            //pass2jq = jQuery.trim(type.replace(hotkeys.override, ''));
             if (typeof data === "string"){
                 data = {'combi': data};
             }
@@ -152,15 +152,15 @@ Note:
                         jqElem.attr('hkId', selectorId);
                         //jQuery.event.add(this, eventType, hotkeys.handler);
                     });
-                    result = this.__bind__(handle.join(' '), data, hotkeys.handler)
+                    //~ result = this.__bind__(handle.join(' '), data, hotkeys.handler)
                 }
             }
-            // see if there are other types, pass them to the original $.fn.bind
-            if (pass2jq){
-                // call original jQuery.bind()
-                result = this.__bind__(pass2jq, data, fn);
-            }
-            return result;
+            //~ // see if there are other types, pass them to the original $.fn.bind
+            //~ if (pass2jq){
+                //~ // call original jQuery.bind()
+                //~ result = this.__bind__(pass2jq, data, fn);
+            //~ }
+            return this.__bind__(type, data, fn);;
         }
     };
     // work-around for opera and safari where (sometimes) the target is the element which was last 
