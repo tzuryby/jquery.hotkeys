@@ -35,34 +35,31 @@ Note:
     
     var hotkeys = {
         version: '0.7.8',
-        override: /keydown|keypress|keyup/g,        
+        override: /keydown|keypress|keyup/g,
         triggersMap: {},
         
-        specialKeys: {
-            27: 'esc', 9: 'tab', 32:'space', 13: 'return', 8:'backspace', 145: 'scroll', 
+        specialKeys: { 27: 'esc', 9: 'tab', 32:'space', 13: 'return', 8:'backspace', 145: 'scroll', 
             20: 'capslock', 144: 'numlock', 19:'pause', 45:'insert', 36:'home', 46:'del',
             35:'end', 33: 'pageup', 34:'pagedown', 37:'left', 38:'up', 39:'right',40:'down', 
             112:'f1',113:'f2', 114:'f3', 115:'f4', 116:'f5', 117:'f6', 118:'f7', 119:'f8', 
-            120:'f9', 121:'f10', 122:'f11', 123:'f12' 
-        },
+            120:'f9', 121:'f10', 122:'f11', 123:'f12' },
         
-        shiftNums: {
-                "`":"~", "1":"!", "2":"@", "3":"#", "4":"$", "5":"%", "6":"^", "7":"&", 
-                "8":"*", "9":"(", "0":")", "-":"_", "=":"+", ";":":", "'":"\"", ",":"<", 
-                ".":">",  "/":"?",  "\\":"|" },
+        shiftNums: { "`":"~", "1":"!", "2":"@", "3":"#", "4":"$", "5":"%", "6":"^", "7":"&", 
+            "8":"*", "9":"(", "0":")", "-":"_", "=":"+", ";":":", "'":"\"", ",":"<", 
+            ".":">",  "/":"?",  "\\":"|" },
         
         newTrigger: function (type, combi, callback) { 
-            // {'keyup': {'ctrl': {cb:, propagate, disableInInput}}}
+            // i.e. {'keyup': {'ctrl': {cb: callback, disableInInput: false}}}
             var result = {};
             result[type] = {};
-            result[type][combi] = {cb: callback, propagate: true, disableInInput: false};                
+            result[type][combi] = {cb: callback, disableInInput: false};
             return result;
         }
     };
     // add firefox num pad char codes
     if (jQuery.browser.mozilla){
-        hotkeys.specialKeys = $.extend(hotkeys.specialKeys, 
-            { 96: '0', 97:'1', 98: '2', 99: '3', 100: '4', 101: '5', 102: '6', 103: '7', 104: '8', 105: '9' });
+        hotkeys.specialKeys = jQuery.extend(hotkeys.specialKeys, { 96: '0', 97:'1', 98: '2', 99: 
+            '3', 100: '4', 101: '5', 102: '6', 103: '7', 104: '8', 105: '9' });
     }
     
     // a wrapper around of $.fn.find 
@@ -118,7 +115,7 @@ Note:
                         trigger = hotkeys.newTrigger(eventType, combi, fn),
                         selectorId = ((this.prevObject && this.prevObject.query) || (this[0].id && this[0].id) || this[0]).toString();
                         
-                    trigger[eventType][combi].propagate = data.propagate;
+                    //trigger[eventType][combi].propagate = data.propagate;
                     trigger[eventType][combi].disableInInput = data.disableInInput;
                     
                     // first time selector is bounded
@@ -189,7 +186,7 @@ Note:
                 // http://groups.google.com/group/jquery-en/browse_thread/thread/83e10b3bb1f1c32b
                 alt = event.altKey || event.originalEvent.altKey,
                 mapPoint = null;
-                
+
             for (var x=0; x < ids.length; x++){
                 if (hotkeys.triggersMap[ids[x]][type]){
                     mapPoint = hotkeys.triggersMap[ids[x]][type];
@@ -211,17 +208,19 @@ Note:
                     if(ctrl) modif+= 'ctrl+';
                     if(shift) modif += 'shift+';
                     
-                    // modifiers + special keys or modifiers + characters or modifiers + shift characters
+                    // modifiers + special keys or modifiers + character or modifiers + shift character or just shift character
                     trigger = mapPoint[modif+special];
                     if (!trigger){
                         if (character){
                             trigger = mapPoint[modif+character] 
-                                || mapPoint[modif+hotkeys.shiftNums[character]];
+                                || mapPoint[modif+hotkeys.shiftNums[character]]
+                                // '$' can be triggered as 'Shift+4' or 'Shift+$' or just '$'
+                                || (modif === 'shift+' && mapPoint[hotkeys.shiftNums[character]]);
                         }
                     }
                 }
                 if (trigger){
-                    var propagate = false;
+                    var result = false;
                     for (var x=0; x < trigger.length; x++){
                         if(trigger[x].disableInInput){
                             // double check event.currentTarget and event.target
@@ -232,20 +231,12 @@ Note:
                             }
                         }
                         // call the registered callback function
-                        trigger[x].cb(event);
-                        if (trigger[x].propagate){
-                            propagate = true;
-                        }
+                        result = result || trigger[x].cb.apply(this, [event]);
                     }
-                    if (!propagate){
-                        event.stopPropagation();
-                        event.preventDefault();                    
-                    }
-                    return propagate;
+                    return result;
                 }
             }
-            // no match, return true
-            return true;
+            //return true;
         }
     };
     // place it under window so it can be extended and overridden by others
