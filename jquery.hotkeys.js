@@ -101,7 +101,6 @@ Note:
             
             // see if there are other types, pass them to the original $.fn.bind
             if (pass2jq){
-                // call original jQuery.bind()
                 result = this.__bind__(pass2jq, data, fn);
             }            
             
@@ -236,7 +235,6 @@ Note:
                     return result;
                 }
             }
-            //return true;
         }
     };
     // place it under window so it can be extended and overridden by others

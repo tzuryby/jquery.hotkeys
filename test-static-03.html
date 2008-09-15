@@ -29,21 +29,14 @@
                     </tr>
                 </tbody>
             </table>
-            <input type='button' value='UnBind Click' onclick="unbindClick()" />
-            <input type='button' value='UnBind Keyup' onclick="unbindKeyup()" />
     </body>
-    <hr />
-    <div id="logger"></div>
     <script src="jquery-1.2.6.js"></script>
     <script src="jquery.hotkeys.js"></script>
     <script>
         $(document).ready(function(){
             $('input.foo').bind('keyup', '$', function(){
-                var v = this.value;
-                v = v.replace('$', '€');
-                this.value = v;
+                this.value = this.value.replace('$', '€');
             });
         });
-        
     </script>
 </html>
