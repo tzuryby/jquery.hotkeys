@@ -99,3 +99,13 @@ Others, (IE) either let you handle built-in short-cuts, but will add their funct
 
 
 ###Current Version is: beta 0.7
+
+This is a regular paragraph.
+
+<table>
+    <tr>
+        <td>Foo</td>
+    </tr>
+</table>
+
+This is another regular paragraph.
