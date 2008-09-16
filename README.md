@@ -17,6 +17,7 @@ $('input.foo').bind('keyup', '$', function(){
 
 $('div.foo').unbind('keydown', 'Ctrl+a', fn);
 </pre>
+## [Live Demo](http://jshotkeys.googlepages.com/test-static-01.html)
 
 #### Types
 Supported types are `'keydown'`, `'keyup'` and `'keypress'`
@@ -39,21 +40,22 @@ In previous versions there was an option propagate which is removed now and impl
 
 When using jQuery, if an event handler returns false, jQuery will call `stopPropagation()` and `preventDefault()`
 
-
-## [Live Demo](http://jshotkeys.googlepages.com/test-static-01.html)
-
 ## jQuery Compatibility
 Tested with *jQuery 1.2.6*
 
 ## Browser support
 
 <table>
-<tbody>
-<tr><td>        </td><td>IE 6/7/8</td><td>FF 1.5/2/3</td><td>Opera-9</td><td>Safari-3</td><td>Chrome-0.2</td><td></tr>
-<tr><td width='70px'>Windows</td><td>+</td><td>+</td><td>+</td><td>+</td><td>+</td><td></tr>
-<tr><td>Mac OS X</td><td>x</td><td>+</td><td>?</td><td>+</td><td>x</td><td></tr>
-<tr><td>GNU/Linux</td><td>x</td><td>+</td><td>+</td><td>x</td><td>x</td><td></tr>
-<tbody>
+    <tbody>
+        <tr>
+            <td>        </td>
+            <td>IE 6/7/8</td>
+            <td>FF 1.5/2/3</td>
+            <td>Opera-9</td><td>Safari-3</td><td>Chrome-0.2</td><td></tr>
+        <tr><td width='70px'>Windows</td><td>+</td><td>+</td><td>+</td><td>+</td><td>+</td><td></tr>
+        <tr><td>Mac OS X</td><td>x</td><td>+</td><td>?</td><td>+</td><td>x</td><td></tr>
+        <tr><td>GNU/Linux</td><td>x</td><td>+</td><td>+</td><td>x</td><td>x</td><td></tr>
+    <tbody>
 </table>
 
 * \+ Works fine.  
