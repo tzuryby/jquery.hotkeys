@@ -43,9 +43,7 @@ When using jQuery, if an event handler returns false, jQuery will call `stopProp
 ## jQuery Compatibility
 Tested with *jQuery 1.2.6*
 
-##Browser/Platfrom Matrix Table.  
-
-It works wit hall the major browsers on all available platforms (Win/Mac/Linux)
+It known to be working with all the major browsers on all available platforms (Win/Mac/Linux)
 
  * IE 6/7/8
  * FF 1.5/2/3
