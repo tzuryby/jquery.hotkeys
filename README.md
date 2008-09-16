@@ -45,14 +45,14 @@ Tested with *jQuery 1.2.6*
 
 ## Browser support
 Browser/Platfrom Matrix Table.
-
+<pre>
 <table>
     <tr><td></td><td>IE 6/7/8</td><td>FF 1.5/2/3</td><td>Opera-9</td><td>Safari-3</td><td>Chrome-0.2</td><td></tr>
     <tr><td width='70px'>Windows</td><td>+</td><td>+</td><td>+</td><td>+</td><td>+</td><td></tr>
     <tr><td>Mac OS X</td><td>x</td><td>+</td><td>?</td><td>+</td><td>x</td><td></tr>
     <tr><td>GNU/Linux</td><td>x</td><td>+</td><td>+</td><td>x</td><td>x</td><td></tr>
 </table>
-
+</pre>
 * + Works fine.  
 * X The browser is not available on that platform.
 * ? I don't have that browser installed on that platform.
