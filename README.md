@@ -40,7 +40,7 @@ In previous versions there was an option propagate which is removed now and impl
 When using jQuery, if an event handler returns false, jQuery will call `stopPropagation()` and `preventDefault()`
 
 
-## [http://jshotkeys.googlepages.com/test-static-01.html Live Demo]
+## [Live Demo](http://jshotkeys.googlepages.com/test-static-01.html)
 
 ## jQuery Compatibility
 Tested with *jQuery 1.2.6*
