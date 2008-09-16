@@ -43,8 +43,8 @@ When using jQuery, if an event handler returns false, jQuery will call `stopProp
 ## jQuery Compatibility
 Tested with *jQuery 1.2.6*
 
-## Browser support
 Browser/Platfrom Matrix Table.
+
 
 <table>
     <tr>
@@ -60,6 +60,7 @@ Browser/Platfrom Matrix Table.
         <td>GNU/Linux</td><td>x</td><td>+</td><td>+</td><td>x</td><td>x</td>
     </tr>
 </table>
+
 
 * `+` Works fine.  
 * `X` The browser is not available on that platform.
