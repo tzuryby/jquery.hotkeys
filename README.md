@@ -92,7 +92,7 @@ This is a regular paragraph.
 
 <table>
     <tr>
-        <td>Foo</td>
+        <td>   /   </td><td>IE-6+</td><td>FF-1.5+</td><td>Opera-9</td><td>Safari-3</td>
     </tr>
 </table>
 
