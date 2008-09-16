@@ -45,6 +45,7 @@ Tested with *jQuery 1.2.6*
 
 ## Browser support
 
+
 <table>
     <tbody>
         <tr>
@@ -58,7 +59,8 @@ Tested with *jQuery 1.2.6*
     <tbody>
 </table>
 
-* \+ Works fine.  
+
+* + Works fine.  
 * X The browser is not available on that platform.
 * ? I don't have that browser installed on that platform.
 
