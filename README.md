@@ -43,29 +43,6 @@ When using jQuery, if an event handler returns false, jQuery will call `stopProp
 ## jQuery Compatibility
 Tested with *jQuery 1.2.6*
 
-Browser/Platfrom Matrix Table.
-
-
-<table>
-    <tr>
-        <td></td><td>IE 6/7/8</td><td>FF 1.5/2/3</td><td>Opera-9</td><td>Safari-3</td><td>Chrome-0.2</td>
-    </tr>
-    <tr>
-        <td width='70px'>Windows</td><td>+</td><td>+</td><td>+</td><td>+</td><td>+</td>
-    </tr>
-    <tr>
-        <td>Mac OS X</td><td>x</td><td>+</td><td>?</td><td>+</td><td>x</td>
-    </tr>
-    <tr>
-        <td>GNU/Linux</td><td>x</td><td>+</td><td>+</td><td>x</td><td>x</td>
-    </tr>
-</table>
-
-
-* `+` Works fine.  
-* `X` The browser is not available on that platform.
-* `?` I don't have that browser installed on that platform.
-
 * If you happened to have a browser installed on a platform which I marked as '?', I will appreciate if you kindly run the demo and send over the results.*
 
 ## Features added in this version (0.7.x)
@@ -108,3 +85,25 @@ Others, (IE) either let you handle built-in short-cuts, but will add their funct
 
 
 ###Current Version is: beta 0.7
+
+Browser/Platfrom Matrix Table.
+
+<table>
+    <tr>
+        <td></td><td>IE 6/7/8</td><td>FF 1.5/2/3</td><td>Opera-9</td><td>Safari-3</td><td>Chrome-0.2</td>
+    </tr>
+    <tr>
+        <td width='70px'>Windows</td><td>+</td><td>+</td><td>+</td><td>+</td><td>+</td>
+    </tr>
+    <tr>
+        <td>Mac OS X</td><td>x</td><td>+</td><td>?</td><td>+</td><td>x</td>
+    </tr>
+    <tr>
+        <td>GNU/Linux</td><td>x</td><td>+</td><td>+</td><td>x</td><td>x</td>
+    </tr>
+</table>
+
+
+* `+` Works fine.  
+* `X` The browser is not available on that platform.
+* `?` I don't have that browser installed on that platform.
