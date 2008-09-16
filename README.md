@@ -53,8 +53,6 @@ It works wit hall the major browsers on all available platforms (Win/Mac/Linux)
  * Safari-3
  * Chrome-0.2
 
-_If you happened to have a browser installed on a platform which I marked as '?', I will appreciate if you kindly run the demo and send over the results._
-
 ## Features added in this version (0.7.x)
  * Implemented as $.fn - let you use `this`.
  * jQuery selectors are supported.
