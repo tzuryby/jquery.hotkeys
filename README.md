@@ -19,10 +19,10 @@ $('div.foo').unbind('keydown', 'Ctrl+a', fn);
 </pre>
 ## [Live Demo](http://jshotkeys.googlepages.com/test-static-01.html)
 
-#### Types
+## Types
 Supported types are `'keydown'`, `'keyup'` and `'keypress'`
 
-#### Options
+## Options
 The options are `'combi'` i.e. the key combination, and `'disableInInput'` which allow your code not to be executed when the cursor is located inside an input ( `$(elem).is('input') || $(elem).is('textarea')` ).
 
 As you can see, the key combination can be passed as string or as an object. You may pass an object in case you wish to override the default option for `disableInInput` which is set to `false`:
@@ -35,7 +35,7 @@ If you want to use more than one modifiers (e.g. alt+ctrl+z) you should define t
 
 Modifiers are case insensitive, i.e. 'Ctrl+a' 'ctrl+a'.
 
-#### Handler
+## Handler
 In previous versions there was an option propagate which is removed now and implemented at the user code level.
 
 When using jQuery, if an event handler returns false, jQuery will call `stopPropagation()` and `preventDefault()`
