@@ -45,25 +45,13 @@ Tested with *jQuery 1.2.6*
 
 ##Browser/Platfrom Matrix Table.  
 
+It works wit hall the major browsers on all available platforms (Win/Mac/Linux)
 
-<table>
-    <tr>
-        <td></td><td>IE 6/7/8</td><td>FF 1.5/2/3</td><td>Opera-9</td><td>Safari-3</td><td>Chrome-0.2</td>
-    </tr>
-    <tr>
-        <td width='70px'>Windows</td><td>+</td><td>+</td><td>+</td><td>+</td><td>+</td>
-    </tr>
-    <tr>
-        <td>Mac OS X</td><td>x</td><td>+</td><td>?</td><td>+</td><td>x</td>
-    </tr>
-    <tr>
-        <td>GNU/Linux</td><td>x</td><td>+</td><td>+</td><td>x</td><td>x</td>
-    </tr>
-</table>
-
-* `+` Works fine.
-* `X` The browser is not available on that platform.
-* `?` I don't have that browser installed on that platform.
+ * IE 6/7/8
+ * FF 1.5/2/3
+ * Opera-9
+ * Safari-3
+ * Chrome-0.2
 
 _If you happened to have a browser installed on a platform which I marked as '?', I will appreciate if you kindly run the demo and send over the results._
 
