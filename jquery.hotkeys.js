@@ -56,12 +56,13 @@ Note:
         }
     };
     // add firefox num pad char codes
-    if (jQuery.browser.mozilla){
-        hotkeys.specialKeys = jQuery.extend(hotkeys.specialKeys, { 96: '0', 97:'1', 98: '2', 99: 
-            '3', 100: '4', 101: '5', 102: '6', 103: '7', 104: '8', 105: '9', 106: '*', 
-            107: '+', 109: '-', 110: '.', 111 : '/'
-            });
-    }
+    //if (jQuery.browser.mozilla){
+    // add num pad char codes
+    hotkeys.specialKeys = jQuery.extend(hotkeys.specialKeys, { 96: '0', 97:'1', 98: '2', 99: 
+        '3', 100: '4', 101: '5', 102: '6', 103: '7', 104: '8', 105: '9', 106: '*', 
+        107: '+', 109: '-', 110: '.', 111 : '/'
+        });
+    //}
     
     // a wrapper around of $.fn.find 
     // see more at: http://groups.google.com/group/jquery-en/browse_thread/thread/18f9825e8d22f18d
