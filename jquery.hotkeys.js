@@ -26,19 +26,20 @@ Note:
 */
 
 (function (jQuery){
-    // keep reference to the original $.fn.bind and $.fn.unbind
+    // keep reference to the original $.fn.bind, $.fn.unbind and $.fn.find
     jQuery.fn.__bind__ = jQuery.fn.bind;
     jQuery.fn.__unbind__ = jQuery.fn.unbind;
     jQuery.fn.__find__ = jQuery.fn.find;
     
     var hotkeys = {
-        version: '0.7.8',
-        override: /keydown|keypress|keyup/g,
+        version: '0.7.9',
+        override: /keypress|keydown|keyup/g,
         triggersMap: {},
         
         specialKeys: { 27: 'esc', 9: 'tab', 32:'space', 13: 'return', 8:'backspace', 145: 'scroll', 
             20: 'capslock', 144: 'numlock', 19:'pause', 45:'insert', 36:'home', 46:'del',
             35:'end', 33: 'pageup', 34:'pagedown', 37:'left', 38:'up', 39:'right',40:'down', 
+            109: '-', 
             112:'f1',113:'f2', 114:'f3', 115:'f4', 116:'f5', 117:'f6', 118:'f7', 119:'f8', 
             120:'f9', 121:'f10', 122:'f11', 123:'f12', 191: '/'},
         
@@ -57,13 +58,15 @@ Note:
     // add firefox num pad char codes
     if (jQuery.browser.mozilla){
         hotkeys.specialKeys = jQuery.extend(hotkeys.specialKeys, { 96: '0', 97:'1', 98: '2', 99: 
-            '3', 100: '4', 101: '5', 102: '6', 103: '7', 104: '8', 105: '9' });
+            '3', 100: '4', 101: '5', 102: '6', 103: '7', 104: '8', 105: '9', 106: '*', 
+            107: '+', 109: '-', 110: '.', 111 : '/'
+            });
     }
     
     // a wrapper around of $.fn.find 
     // see more at: http://groups.google.com/group/jquery-en/browse_thread/thread/18f9825e8d22f18d
     jQuery.fn.find = function( selector ) {
-        this.query=selector;
+        this.query = selector;
         return jQuery.fn.__find__.apply(this, arguments);
 	};
     
@@ -166,6 +169,7 @@ Note:
     };
     // the event handler
     hotkeys.handler = function(event) {
+        console.log(event);
         var target = hotkeys.findElement(event.currentTarget), 
             jTarget = jQuery(target),
             ids = jTarget.attr('hkId');
@@ -204,7 +208,6 @@ Note:
                     if(alt) modif +='alt+';
                     if(ctrl) modif+= 'ctrl+';
                     if(shift) modif += 'shift+';
-                    
                     // modifiers + special keys or modifiers + character or modifiers + shift character or just shift character
                     trigger = mapPoint[modif+special];
                     if (!trigger){
@@ -222,11 +225,11 @@ Note:
                         if(trigger[x].disableInInput){
                             // double check event.currentTarget and event.target
                             var elem = jQuery(event.target);
-                            if (jTarget.is("input") || jTarget.is("textarea") 
-                                || elem.is("input") || elem.is("textarea")) {
+                            if (jTarget.is("input") || jTarget.is("textarea") || jTarget.is("select") 
+                                || elem.is("input") || elem.is("textarea") || elem.is("select")) {
                                 return true;
                             }
-                        }
+                        }                       
                         // call the registered callback function
                         result = result || trigger[x].cb.apply(this, [event]);
                     }
