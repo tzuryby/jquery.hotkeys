@@ -169,7 +169,6 @@ Note:
     };
     // the event handler
     hotkeys.handler = function(event) {
-        console.log(event);
         var target = hotkeys.findElement(event.currentTarget), 
             jTarget = jQuery(target),
             ids = jTarget.attr('hkId');
