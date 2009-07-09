@@ -57,7 +57,7 @@ Note:
             // i.e. {'keyup': {'ctrl': {cb: callback, disableInInput: false}}}
             var result = {};
             result[type] = {};
-            result[type][combi] = {cb: callback, disableInInput: false};
+            result[type][combi] = {cb: callback, disableInInput: false, shortcut:combi};
             return result;
         }
     };
