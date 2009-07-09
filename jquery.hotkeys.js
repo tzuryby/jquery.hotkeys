@@ -27,19 +27,18 @@ Note:
 
 (function (jQuery){
     // keep reference to the original $.fn.bind, $.fn.unbind and $.fn.find
-    // check if not defined first solving issue#57 (http://code.google.com/p/js-hotkeys/issues/detail?id=57)
-    if (!jQuery.fn.__bind__){
+    if (jQuery.fn.__bind__ === undefined){
         jQuery.fn.__bind__ = jQuery.fn.bind;
     }
-    if (!jQuery.fn.__unbind__){
+    if (jQuery.fn.__unbind__ === undefined){
         jQuery.fn.__unbind__ = jQuery.fn.unbind;
     }
-    if (!jQuery.fn.__find__){
+    if (jQuery.fn.__find__  === undefined){
         jQuery.fn.__find__ = jQuery.fn.find;
     }
     
     var hotkeys = {
-        version: '0.8.0',
+        version: '0.7.9',
         override: /keypress|keydown|keyup/g,
         triggersMap: {},
         
@@ -58,7 +57,7 @@ Note:
             // i.e. {'keyup': {'ctrl': {cb: callback, disableInInput: false}}}
             var result = {};
             result[type] = {};
-            result[type][combi] = {cb: callback, disableInInput: false, shortcut: combi};
+            result[type][combi] = {cb: callback, disableInInput: false};
             return result;
         }
     };
@@ -236,14 +235,7 @@ Note:
                                 || elem.is("input") || elem.is("textarea") || elem.is("select")) {
                                 return true;
                             }
-                        }
-                        /***********
-                            fix the data issue -- see: combi.html
-                        ************/
-                        
-                        console.log(event.data);
-                        console.log(trigger);
-                        
+                        }                       
                         // call the registered callback function
                         result = result || trigger[x].cb.apply(this, [event]);
                     }
