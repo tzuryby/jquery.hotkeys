@@ -22,8 +22,9 @@
 			96: "0", 97: "1", 98: "2", 99: "3", 100: "4", 101: "5", 102: "6", 103: "7",
 			104: "8", 105: "9", 106: "*", 107: "+", 109: "-", 110: ".", 111 : "/", 
 			112: "f1", 113: "f2", 114: "f3", 115: "f4", 116: "f5", 117: "f6", 118: "f7", 119: "f8", 
-			120: "f9", 121: "f10", 122: "f11", 123: "f12", 144: "numlock", 145: "scroll", 191: "/", 224: "meta"
-		},
+			120: "f9", 121: "f10", 122: "f11", 123: "f12", 144: "numlock", 145: "scroll", 188: ",", 190: ".",
+			191: "/", 224: "meta"
+ 		},
 	
 		shiftNums: {
 			"`": "~", "1": "!", "2": "@", "3": "#", "4": "$", "5": "%", "6": "^", "7": "&", 
@@ -44,7 +45,7 @@
 		handleObj.handler = function( event ) {
 			// Don't fire in text-accepting inputs that we didn't directly bind to
 			if ( this !== event.target && (/textarea|select/i.test( event.target.nodeName ) ||
-				 event.target.type === "text") ) {
+				 event.target.type === "text" || $(event.target).prop('contenteditable') == 'true' )) {
 				return;
 			}
 			
