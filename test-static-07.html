@@ -1,29 +1,47 @@
 <html>
     <head>
-        <script src="jquery-1.3.2.min.js"></script>
+        <!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script> -->
+        <!-- <script src="jquery-1.3.2.min.js"></script> -->
+        <script src="jquery-1.7.1.js"></script>
         <script src="jquery.hotkeys.js"></script>
     </head>
 
     <body>
         <input type="button" id="bindCtrlS" value="bind ctrl+s" />
         <input type="button" id="unBindCtrlS" value="unbind ctrl+s" />
+        <hr />
+        <input type="button" id="bindCtrlH" value="bind ctrl+h" />
+        <input type="button" id="unBindCtrlH" value="unbind ctrl+h" />
         <script>
             function bindCtrlS(){
-                jQuery(document).bind('keydown', 'ctrl+s',function (evt){
+                jQuery(document).bind('keydown.ctrl_s', function(evt){
                     alert("Ctrl+S");
                     return false;
                 });
             }
-            
+
             function unBindCtrlS(){
-                jQuery(document).unbind('keydown', 'ctrl+s');
+                jQuery(document).unbind('keydown.ctrl_s');
             }
-            
+
+            function bindCtrlH(){
+                jQuery(document).bind('keydown.ctrl_h', function(evt){
+                    alert("Ctrl+H");
+                    return false;
+                });
+            }
+
+            function unBindCtrlH(){
+                jQuery(document).unbind('keydown.ctrl_h');
+            }
+
             $(document).ready(function(){
                 $('#bindCtrlS').bind('click', bindCtrlS);
                 $('#unBindCtrlS').bind('click', unBindCtrlS);
+                $('#bindCtrlH').bind('click', bindCtrlH);
+                $('#unBindCtrlH').bind('click', unBindCtrlH);
                 }
             );
-            
+
         </script>
     </body></html>
