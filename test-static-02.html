@@ -5,7 +5,7 @@
             * {font-family: mono; font-size:0.95em}
             .eventNotifier{width: 100px; float: left; color:navy; border: dotted 1px navy; padding: 4px; background-color:white; margin:3px}
             .dirty{border: solid 1px #0ca2ff; color:white; background-color:#0ca2ff}
-            
+
         </style>
     </head>
     <body>
@@ -42,49 +42,61 @@
     </body>
     <hr />
     <div id="logger"></div>
-    <script src="jquery-1.3.2.min.js"></script>
+    <script src="jquery-1.7.1.min.js"></script>
+    <!-- <script src="jquery-1.3.2.min.js"></script> -->
     <script src="jquery.hotkeys.js"></script>
     <script>
         $(document).ready(function(){
-            $(document).bind('keydown', 'ctrl+l', function(){$('#input_01')[0].focus();})
-                .bind('keydown', 'shift+#', function(){$('#input_01')[0].value = "Shift#";})
-                .bind('keyup', 'a', function(event){
+            $(document).bind('keydown.ctrl_l', function(){$('#input_01')[0].focus();})
+                .bind('keydown.shift_#', function(){$('#input_01')[0].value = "Shift#";});
+
+            $('#input_01').bind('keyup.a', function(event){
                     var v = $('#input_01')[0].value;
                     v = v.replace("a", "b");
                     v = $('#input_01')[0].value = v;
-                    
+
                     })
                 //.bind('keyup', function () { alert (arguments); })
                 .bind('click', function (event){
                     if (event.target == $('html')[0]){
                         alert("save the planet, don't waste energy over meaningless clicking");
-                    }    
+                    }
                 });
             $('input.foo').bind(
-                'keydown', {combi:'ctrl+k', disableInInput: false}, function(event){
+                'keydown.ctrl_k', function(event){
                     log('binding keydown/ctrl+k to <b>input</b> applied on <b>#' + event.target.id + '</b>');
                     event.stopPropagation();
-                    event.preventDefault();                      
+                    event.preventDefault();
                 }
             );
-            $('table').bind('keydown click keyup', 'ctrl+l', clickHandler);
+
+            // shouldn't do anything since event isn't attached to element itself
+            $('table').bind('keydown.ctrl_l click keyup.ctrl_l', clickHandler);
+            // it would work if using event delegation tho.. also with jQuery 1.7+ $.fn.on()
+            $('table').delegate('input', 'keydown.ctrl_j keyup.ctrl_j', delegateHandler);
         });
-        
+
         function clickHandler(event){
             log('binding ' + event.type + ' with(ctrl+l) to <b>table</b> applied on <b>#' + event.target.id + '</b>');
             event.stopPropagation();
-            event.preventDefault();            
+            event.preventDefault();
         }
-        
+
+        function delegateHandler(event){
+            log('binding ' + event.type + ' with(ctrl+j) to <b>table</b> with event delegation applied on <b>#' + event.target.id + '</b>');
+            event.stopPropagation();
+            event.preventDefault();
+        }
+
         function unbindClick(){
-            $('table').unbind('click', clickHandler).unbind('keyup', 'ctrl+l', clickHandler);
+            $('table').unbind('click', clickHandler).unbind('keyup.ctrl_l', clickHandler);
         }
-        
+
         function unbindKeyup(){
-            $('table').unbind('keyup', 'ctrl+l', clickHandler);
+            $('table').unbind('keyup.ctrl_l', clickHandler);
         }
-        
-        
+
+
         function log(msg){
             $('#logger').html(msg);
         }
