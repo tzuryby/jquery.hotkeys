@@ -42,7 +42,7 @@
 			keys = (handleObj.namespace || "").toLowerCase().split(" ");
 
 		//no need to modify handler if no keys specified
-		if (!keys.length) {
+		if (keys.length === 1 && keys[0] === "") {
 			return;
 		}
 
