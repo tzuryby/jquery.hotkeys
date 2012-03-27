@@ -13,7 +13,7 @@
 (function(jQuery){
 
 	jQuery.hotkeys = {
-		version: "0.8",
+		version: "0.8+",
 
 		specialKeys: {
 			8: "backspace", 9: "tab", 13: "return", 16: "shift", 17: "ctrl", 18: "alt", 19: "pause",
@@ -42,7 +42,7 @@
 			keys = (handleObj.namespace || "").toLowerCase().split(" ");
 
 		//no need to modify handler if no keys specified
-		if (!keys.length) {
+		if (keys.length === 1 && keys[0] === "") {
 			return;
 		}
 
