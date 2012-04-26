@@ -40,6 +40,7 @@
 			//will also allow removing listeners of a specific key combination
 			//and support data objects
 			keys = (handleObj.namespace || "").toLowerCase().split(" ");
+			keys = jQuery.map(keys, function(key) { return key.split("."); });
 
 		//no need to modify handler if no keys specified
 		if (keys.length === 1 && keys[0] === "") {
