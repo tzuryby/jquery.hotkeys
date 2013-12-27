@@ -1,0 +1,14 @@
+{
+  "name": "jquery.hotkeys",
+  "repo": "tzuryby/jquery.hotkeys",
+  "description": "jquery.hotkeys plugin lets you easily add and remove handlers for keyboard events",
+  "version": "1.0.0",
+  "keywords": [],
+  "dependencies": {},
+  "development": {},
+  "license": "MIT",
+  "main": "jquery.hotkeys.js",
+  "scripts": [
+    "jquery.hotkeys.js"
+  ]
+}
